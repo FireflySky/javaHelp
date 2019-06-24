@@ -131,9 +131,8 @@ public class MyGameFrame  extends  Frame {
 		MyGameFrame  f = new MyGameFrame();
 		f.launchFrame();
 	}
-	
+	//防止Frame闪烁
 	private Image offScreenImage = null;
-	 //死亡后
 	public void update(Graphics g) {
 	    if(offScreenImage == null)
 	        offScreenImage = this.createImage(Constant.GAME_WIDTH,Constant.GAME_HEIGHT);//������Ϸ���ڵĿ�Ⱥ͸߶�
