@@ -11,7 +11,8 @@ import java.awt.Rectangle;
  */
 public class GameObject {
 	  Image  img;
-	  double  x,y;
+	   double  x;
+	   double y;
 	   int   speed;
 	  int  width, height;
 	

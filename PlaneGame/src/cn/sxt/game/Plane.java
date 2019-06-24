@@ -1,13 +1,27 @@
 package cn.sxt.game;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 
 public class Plane  extends GameObject {
-	boolean  left,up,right,down;
+	boolean  left,up,right,down,shell;
 	
-	boolean  live = true;  
+	boolean  live = true; 
+	Graphics  gr;
+	
+	//初始化
+		public  Plane(Image  img, double x, double y){
+			this.img = img;
+			this.x = x;
+			this.y = y;
+			this.speed = 4;
+			this.width = img.getWidth(null) ;
+			this.height = img.getHeight(null);
+			
+		}
+		public Plane(){}
 	//飞机移动
 	public  void  drawSelf(Graphics  g){
 		if(live){//判断飞机是否还活着
@@ -24,24 +38,12 @@ public class Plane  extends GameObject {
 				}
 				if(down){
 					y += speed;
-			}
-		}else{
-			
+				}
+				
 		}
 		
-		
-		
 	}
-	//初始化
-	public  Plane(Image  img, double x, double y){
-		this.img = img;
-		this.x = x;
-		this.y = y;
-		this.speed = 3;
-		this.width = img.getWidth(null) ;
-		this.height = img.getHeight(null);
-		
-	}
+	
 	
 	//按键按下事件
 	public  void   addDirection(KeyEvent  e){
@@ -57,6 +59,9 @@ public class Plane  extends GameObject {
 			break;
 		case KeyEvent.VK_S:
 			down = true;
+			break;
+		case KeyEvent.VK_Q:
+			shell=true;
 			break;
 		}
 	}
@@ -76,8 +81,10 @@ public class Plane  extends GameObject {
 			case KeyEvent.VK_S:
 				down = false;
 				break;
+			case KeyEvent.VK_Q:
+				shell=false;
+				break;
 			}
 		}
-	
 	
 }
