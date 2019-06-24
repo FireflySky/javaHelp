@@ -12,8 +12,8 @@ import java.awt.event.WindowEvent;
 import java.util.Date;
 
 /**
- * �ɻ���Ϸ��������
- * @author ���
+ * 游戏主窗口类
+ * @author 
  *
  */
 public class MyGameFrame  extends  Frame {
@@ -101,13 +101,13 @@ public class MyGameFrame  extends  Frame {
 	
 	
 	/**
-	 * ��ʼ������
+	 * 绘制主窗口
 	 */
 	public  void  launchFrame(){
 		this.setTitle("飞机小游戏");
 		this.setVisible(true);
-		this.setSize(Constant.GAME_WIDTH	, Constant.GAME_HEIGHT);
-		this.setLocation(300, 300);
+		this.setSize(Constant.GAME_WIDTH, Constant.GAME_HEIGHT);
+		this.setLocation(300, 300);//位置
 		
 		this.addWindowListener(new WindowAdapter() {
 			@Override
@@ -116,11 +116,11 @@ public class MyGameFrame  extends  Frame {
 			}
 		});
 		
-		new PaintThread().start();	//�����ػ����ڵ��߳�
-		addKeyListener(new KeyMonitor());   //���������Ӽ��̵ļ���
+		new PaintThread().start();	//开启线程
+		addKeyListener(new KeyMonitor());   //给窗口注册键盘监听事件
 		
 		
-		//��ʼ��50���ڵ�
+		//创建子弹对象
 		for(int i=0;i<shells.length;i++){
 			shells[i] = new Shell();
 		}
@@ -133,7 +133,7 @@ public class MyGameFrame  extends  Frame {
 	}
 	
 	private Image offScreenImage = null;
-	 
+	 //死亡后
 	public void update(Graphics g) {
 	    if(offScreenImage == null)
 	        offScreenImage = this.createImage(Constant.GAME_WIDTH,Constant.GAME_HEIGHT);//������Ϸ���ڵĿ�Ⱥ͸߶�
