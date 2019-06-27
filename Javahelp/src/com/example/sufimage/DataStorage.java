@@ -28,13 +28,14 @@ import android.widget.Toast;
  * @author Administrator
  *
  */
-public class DataStorage extends Application{
+public class DataStorage{
 	/**
 	 * sharedPreferences是一个活动类，不能直接调用，需要传一个Context
 	 * @param context
 	 * @param name sharedPreferences名
 	 * @return 
 	 */ 
+	int i=0;
 	String fileurl="/storage/emulated/0/aJavaHelp";
 	public DataStorage(int i) {
 		// TODO Auto-generated constructor stub
@@ -51,31 +52,34 @@ public class DataStorage extends Application{
 		   SharedPreferences.Editor ed=shar.edit();
 		   //创建文件，要保存png，这里后缀就是png，要保存jpg，后缀就用jpg
 	        File file=new File(fileurl+"/"+imgName+".png");
+	        FileOutputStream fileOutputStream=null;
 	        try {
+	        	if(!file.exists()){//文件不存在才下载
 	            //文件输出流
-	            FileOutputStream fileOutputStream=new FileOutputStream(file);
+	            fileOutputStream=new FileOutputStream(file);
 	            //压缩图片，如果要保存png，就用Bitmap.CompressFormat.PNG，要保存jpg就用Bitmap.CompressFormat.JPEG,质量是100%，表示不压缩
 	            bitmap.compress(Bitmap.CompressFormat.PNG,100,fileOutputStream);
 	            //写入，这里会卡顿，因为图片较大
 	            fileOutputStream.flush();
-	            //记得要关闭写入流
-	            fileOutputStream.close();
 	            //成功的提示，写入成功后，请在对应目录中找保存的图片            
-	            ed.putString("Message", "正在下载，请勿关闭应用");            
 	            ed.putString(imgName, fileurl+"/"+imgName+".png");
+	            Toast.makeText(MyAppLication.getContext(), "资源下载中...", Toast.LENGTH_LONG).show();
+	        	}
 	            ed.commit();
-	        } catch (FileNotFoundException e) {	            
-	            ed.putString("Message", "数据更新失败");
-	            e.printStackTrace();
-	            ed.commit();
-	            //失败的提示
-	        } catch (IOException e) {	            
-	            //失败的提示
-	            ed.putString("Message", "数据更新失败");
-	            e.printStackTrace();
-	            ed.commit();
+	        } catch (Exception e) {	            
+	        	Toast.makeText(MyAppLication.getContext(), "资源下载失败", Toast.LENGTH_LONG).show();
+	        }finally{
+	            try {
+	            	//记得要关闭写入流
+	            	if(fileOutputStream!=null){
+	            		fileOutputStream.close();
+	            	}
+					 ed.clear();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 	        }
-            ed.clear();
 	    }
 	   //取图片
 	   public String getImageUrl(int imgNameId,SharedPreferences shar){
