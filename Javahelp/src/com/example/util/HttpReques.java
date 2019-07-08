@@ -1,4 +1,4 @@
-package com.example.sufimage;
+package com.example.util;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -16,11 +16,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.Request.Method;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.example.sufimage.DataStorage;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -38,18 +40,15 @@ public class HttpReques {
 	private SharedPreferences shar = MyAppLication.getContext()
 			.getSharedPreferences("IMAGE", Context.MODE_PRIVATE);
 	private BufferedWriter buf;
+	private Handler handler=null;
 
 	/**
 	 * 获取图片
 	 * 
 	 * @return String
 	 */
-	public void getImageList(RequestQueue queues,final ListView view) {
-		try {
-			
-		} catch (Exception e) {
-
-		}
+	public void getImageList(RequestQueue queues,final ListView view,final Handler handler) {
+		this.handler=handler;
 		final SharedPreferences.Editor editor = shar.edit();
 
 		StringRequest request = new StringRequest(Method.POST,
@@ -59,6 +58,9 @@ public class HttpReques {
 					public void onResponse(String response) {
 						editor.putString("RequesTest", response);
 						editor.commit();
+						Message msg=new Message();
+						msg.what=1;
+						handler.sendMessage(msg);
 						Log log=new Log("网络连接成功:"+response);
 						log.start();
 						runUi(view);
@@ -97,7 +99,7 @@ public class HttpReques {
 				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						Log log=new Log("图片请求失败");
+						Log log=new Log(imgName+"图片请求失败");
 						log.start();
 					}
 				});

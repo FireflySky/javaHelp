@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.example.util.HttpReques;
+import com.example.util.MyAppLication;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,6 +17,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,6 +33,7 @@ public class MainActivity extends Activity {
 	private RequestQueue queues;
 	private LinearLayout layout;
 	private HttpReques http;
+	private Handler handler;
 	private static SharedPreferences shar;
 
 	@SuppressWarnings("deprecation")
@@ -41,9 +45,9 @@ public class MainActivity extends Activity {
 		listView = (ListView) this.findViewById(R.id.listView1);
 		layout = (LinearLayout) this.findViewById(R.id.LinearLayout1);
 		queues = Volley.newRequestQueue(getApplicationContext());// 创建网络请求队
-		
-			shar = MyAppLication.getContext().getSharedPreferences("IMAGE",
-					Context.MODE_PRIVATE);
+
+		shar = MyAppLication.getContext().getSharedPreferences("IMAGE",
+				Context.MODE_PRIVATE);
 
 		DataStorage da = new DataStorage(1);// 创建文件夹
 		// 设置背景图片
@@ -72,7 +76,15 @@ public class MainActivity extends Activity {
 				startActivity(intent);
 			}
 		});
-
+		handler = new Handler() {
+			public void handleMessage(android.os.Message msg) {
+				switch (msg.what) {
+				case 1:
+					init();
+					break;
+				}
+			};
+		};
 	}
 
 	// 更新Ui
@@ -83,19 +95,22 @@ public class MainActivity extends Activity {
 				android.R.layout.simple_expandable_list_item_1, listTitle);
 		listView.setAdapter(arr);
 	};
-	//更新资源
-	private void upDate(){
-		http=new HttpReques();
-		http.getImageList(queues,listView);
-		http.getImageArr(queues);	
-		
+
+	// 更新资源
+	private void upDate() {
+		http = new HttpReques();
+		http.getImageList(queues, listView,handler);
+		http.getImageArr(queues);
+
 	}
+
 	// 更新菜单点击
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int itemId = item.getItemId();

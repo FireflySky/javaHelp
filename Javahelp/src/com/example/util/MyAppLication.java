@@ -1,4 +1,4 @@
-package com.example.sufimage;
+package com.example.util;
 
 import android.app.Application;
 import android.content.Context;

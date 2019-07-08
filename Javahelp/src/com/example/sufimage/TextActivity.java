@@ -3,6 +3,8 @@ package com.example.sufimage;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import com.example.util.BaseDragZoomImageView;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;

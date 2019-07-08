@@ -5,7 +5,7 @@
     tools:context="com.example.sufimage.TextActivity" >
 
      
-     <com.example.sufimage.BaseDragZoomImageView
+     <com.example.util.BaseDragZoomImageView
          android:id="@+id/imageview"
          android:layout_width="match_parent"
          android:layout_height="match_parent"
