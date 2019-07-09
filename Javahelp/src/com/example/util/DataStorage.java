@@ -62,13 +62,13 @@ public class DataStorage {
 				// 成功的提示，写入成功后，请在对应目录中找保存的图片
 				ed.putString(imgName, fileurl + "/" + imgName + ".png");
 				msg.what = 3;
-				handler.sendMessage(msg);
 			}
 			ed.commit();
 		} catch (Exception e) {
 			Toast.makeText(MyAppLication.getContext(), "资源下载失败",
 					Toast.LENGTH_LONG).show();
 			msg.what = 3;
+			
 		} finally {
 			handler.sendMessage(msg);
 			try {

@@ -1,10 +1,6 @@
 package com.example.util;
 
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -23,8 +19,6 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -49,7 +43,6 @@ public class HttpReques {
 	public void getImageList(RequestQueue queues,final ListView view,final Handler handler) {
 		this.handler=handler;
 		final SharedPreferences.Editor editor = shar.edit();
-		final Message msg=new Message();
 		StringRequest request = new StringRequest(Method.POST,
 				"http://225b8u4018.iask.in/JavaHelps/servlet/HttpReques",
 				new Response.Listener<String>() {
@@ -57,6 +50,7 @@ public class HttpReques {
 					public void onResponse(String response) {
 						editor.putString("RequesTest", response);
 						editor.commit();
+						Message msg=new Message();
 						msg.what=1;
 						handler.sendMessage(msg);
 						Log log=new Log("网络连接成功:"+response);
@@ -68,7 +62,9 @@ public class HttpReques {
 					public void onErrorResponse(VolleyError error) {
 						Log log=new Log("网络请求失败");
 						log.start();
+						Message msg=new Message();
 						msg.what=3;
+						handler.sendMessage(msg);
 						Toast.makeText(MyAppLication.getContext(), "网络连接中断",
 								Toast.LENGTH_LONG).show();
 					}
@@ -77,7 +73,6 @@ public class HttpReques {
 		request.setTag(TAG);
 		// 加入请求队列
 		queues.add(request);
-		handler.sendMessage(msg);
 	}
 
 	/**
@@ -86,8 +81,9 @@ public class HttpReques {
 	 * @return bitmap
 	 */
 	private synchronized void getImage(RequestQueue queues, final String imgName) {
-		final Message msg=new Message();
-		msg.what=4;
+		Message msg=new Message();
+		msg.what=2;
+		handler.sendMessage(msg);
 		ImageRequest imageRequest = new ImageRequest(
 				"http://225b8u4018.iask.in/JavaHelps/" + imgName + ".png",
 				new Response.Listener<Bitmap>() {
@@ -95,17 +91,18 @@ public class HttpReques {
 					public void onResponse(Bitmap response) {
 						DataStorage da = new DataStorage();
 						da.dataImg(response, imgName,handler);
-						msg.what=2;
 					}
 				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
 						Log log=new Log(imgName+"图片请求失败");
 						log.start();
+						Message msg=new Message();
 						msg.what=3;
+						handler.sendMessage(msg);
 					}
 				});
-		handler.sendMessage(msg);
+		
 		queues.add(imageRequest);
 	}
 

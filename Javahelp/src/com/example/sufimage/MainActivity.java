@@ -9,17 +9,18 @@ import com.example.util.DataStorage;
 import com.example.util.HttpReques;
 import com.example.util.MyAppLication;
 
+import android.R.bool;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +29,6 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	private ListView listView;
@@ -49,10 +49,9 @@ public class MainActivity extends Activity {
 		toast=(TextView) this.findViewById(R.id.textView1);
 		layout = (LinearLayout) this.findViewById(R.id.LinearLayout1);
 		queues = Volley.newRequestQueue(getApplicationContext());// 创建网络请求队
-
 		shar = MyAppLication.getContext().getSharedPreferences("IMAGE",
 				Context.MODE_PRIVATE);
-
+		toast.setBackgroundColor(Color.GRAY);
 		DataStorage da = new DataStorage(1);// 创建文件夹
 		// 设置背景图片
 		try {
@@ -88,7 +87,7 @@ public class MainActivity extends Activity {
 					init();
 					break;
 				case 2:
-					toast.setVisibility(View.VISIBLE);
+						toast.setVisibility(View.VISIBLE);
 					break;
 				case 3:
 					toast.setVisibility(View.GONE);
