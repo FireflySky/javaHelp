@@ -1,27 +1,14 @@
-package com.example.sufimage;
+package com.example.util;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
 
-import com.android.volley.RequestQueue;
-import com.example.util.MyAppLication;
-
-import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.preference.PreferenceManager;
-import android.util.Base64;
+import android.os.Handler;
+import android.os.Message;
 import android.widget.Toast;
 
 /**
@@ -31,6 +18,8 @@ import android.widget.Toast;
  * 
  */
 public class DataStorage {
+	private SharedPreferences shar = MyAppLication.getContext()
+			.getSharedPreferences("IMAGE", Context.MODE_PRIVATE);
 	/**
 	 * sharedPreferences是一个活动类，不能直接调用，需要传一个Context
 	 * 
@@ -53,8 +42,9 @@ public class DataStorage {
 	}
 
 	// 存图片
-	public void dataImg(Bitmap bitmap, String imgName, SharedPreferences shar) {
+	public void dataImg(Bitmap bitmap, String imgName, Handler handler) {
 		SharedPreferences.Editor ed = shar.edit();
+		Message msg = new Message();
 		// 创建文件，要保存png，这里后缀就是png，要保存jpg，后缀就用jpg
 		File file = new File(fileurl + "/" + imgName + ".png");
 		FileOutputStream fileOutputStream = null;
@@ -71,13 +61,16 @@ public class DataStorage {
 				fileOutputStream.flush();
 				// 成功的提示，写入成功后，请在对应目录中找保存的图片
 				ed.putString(imgName, fileurl + "/" + imgName + ".png");
-
+				msg.what = 3;
+				handler.sendMessage(msg);
 			}
 			ed.commit();
 		} catch (Exception e) {
 			Toast.makeText(MyAppLication.getContext(), "资源下载失败",
 					Toast.LENGTH_LONG).show();
+			msg.what = 3;
 		} finally {
+			handler.sendMessage(msg);
 			try {
 				// 记得要关闭写入流
 				if (fileOutputStream != null) {

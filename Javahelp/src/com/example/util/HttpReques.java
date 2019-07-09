@@ -16,7 +16,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.Request.Method;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.StringRequest;
-import com.example.sufimage.DataStorage;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -43,14 +42,14 @@ public class HttpReques {
 	private Handler handler=null;
 
 	/**
-	 * 获取图片
+	 * 获取title
 	 * 
 	 * @return String
 	 */
 	public void getImageList(RequestQueue queues,final ListView view,final Handler handler) {
 		this.handler=handler;
 		final SharedPreferences.Editor editor = shar.edit();
-
+		final Message msg=new Message();
 		StringRequest request = new StringRequest(Method.POST,
 				"http://225b8u4018.iask.in/JavaHelps/servlet/HttpReques",
 				new Response.Listener<String>() {
@@ -58,12 +57,10 @@ public class HttpReques {
 					public void onResponse(String response) {
 						editor.putString("RequesTest", response);
 						editor.commit();
-						Message msg=new Message();
 						msg.what=1;
 						handler.sendMessage(msg);
 						Log log=new Log("网络连接成功:"+response);
 						log.start();
-						runUi(view);
 						editor.clear();
 					}
 				}, new Response.ErrorListener() {// 请求失败
@@ -71,6 +68,7 @@ public class HttpReques {
 					public void onErrorResponse(VolleyError error) {
 						Log log=new Log("网络请求失败");
 						log.start();
+						msg.what=3;
 						Toast.makeText(MyAppLication.getContext(), "网络连接中断",
 								Toast.LENGTH_LONG).show();
 					}
@@ -79,7 +77,7 @@ public class HttpReques {
 		request.setTag(TAG);
 		// 加入请求队列
 		queues.add(request);
-
+		handler.sendMessage(msg);
 	}
 
 	/**
@@ -87,45 +85,45 @@ public class HttpReques {
 	 * 
 	 * @return bitmap
 	 */
-	private void getImage(RequestQueue queues, final String imgName) {
+	private synchronized void getImage(RequestQueue queues, final String imgName) {
+		final Message msg=new Message();
+		msg.what=4;
 		ImageRequest imageRequest = new ImageRequest(
 				"http://225b8u4018.iask.in/JavaHelps/" + imgName + ".png",
 				new Response.Listener<Bitmap>() {
 					@Override
 					public void onResponse(Bitmap response) {
 						DataStorage da = new DataStorage();
-						da.dataImg(response, imgName, shar);
+						da.dataImg(response, imgName,handler);
+						msg.what=2;
 					}
 				}, 0, 0, Config.RGB_565, new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
 						Log log=new Log(imgName+"图片请求失败");
 						log.start();
+						msg.what=3;
 					}
 				});
+		handler.sendMessage(msg);
 		queues.add(imageRequest);
 	}
 
 	//将图片保存	 
-	public void getImageArr(RequestQueue queues) {
+	public void getImageArr(final RequestQueue queues) {
 		String str = shar.getString("RequesTest", "");
 		if (!str.equals("")) {
-			String[] imgName = str.substring(0, str.indexOf("*")).split(",");
-			for (int i = 0; i < imgName.length; i++) {
-
-				this.getImage(queues, imgName[i]);
-			}
+			final String[] imgName = str.substring(0, str.indexOf("*")).split(",");
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					for (int i = 0; i < imgName.length; i++) {
+						getImage(queues, imgName[i]);
+					}
+				}
+			}).start();
 		}
 	}
-	//更新UI
-	private void runUi(ListView view){
-		String str = shar.getString("RequesTest", "");
-		String[] listTitle = str.substring(str.lastIndexOf("*") + 1).split(",");// 获取ListViewTitle
-		ArrayAdapter<String> arr = new ArrayAdapter<String>(MyAppLication.getContext(),
-				android.R.layout.simple_expandable_list_item_1, listTitle);
-		view.setAdapter(arr);
-	}
-	
 	//程序运行日志
 	 private Date date=new Date();
 	 private SimpleDateFormat sd=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

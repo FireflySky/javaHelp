@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.example.util.DataStorage;
 import com.example.util.HttpReques;
 import com.example.util.MyAppLication;
 
@@ -26,6 +27,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -34,6 +36,7 @@ public class MainActivity extends Activity {
 	private LinearLayout layout;
 	private HttpReques http;
 	private Handler handler;
+	private TextView toast;
 	private static SharedPreferences shar;
 
 	@SuppressWarnings("deprecation")
@@ -43,6 +46,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 
 		listView = (ListView) this.findViewById(R.id.listView1);
+		toast=(TextView) this.findViewById(R.id.textView1);
 		layout = (LinearLayout) this.findViewById(R.id.LinearLayout1);
 		queues = Volley.newRequestQueue(getApplicationContext());// 创建网络请求队
 
@@ -76,11 +80,18 @@ public class MainActivity extends Activity {
 				startActivity(intent);
 			}
 		});
+		//更新UI
 		handler = new Handler() {
 			public void handleMessage(android.os.Message msg) {
 				switch (msg.what) {
 				case 1:
 					init();
+					break;
+				case 2:
+					toast.setVisibility(View.VISIBLE);
+					break;
+				case 3:
+					toast.setVisibility(View.GONE);
 					break;
 				}
 			};
