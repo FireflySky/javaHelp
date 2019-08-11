@@ -93,7 +93,7 @@ public class DownLoadService extends Service{
 		return builder.build();//返回构建的通知对象
 	}
 	
-	class DownLoadBinder extends Binder{
+	public class DownLoadBinder extends Binder{
 		public void startDownload(String url){
 			if(doTask==null){
 				downLoadUrl=url;
@@ -115,7 +115,7 @@ public class DownLoadService extends Service{
 				doTask.canceDwomLoad();
 			}else if(downLoadUrl != null){
 				//取消下载将下载的文件删除，关闭通知
-				File file=new File("文件路径");
+				File file=new File("/storage/emulated/0/aJavaHelp/day1.png");
 				if(file.exists()){
 					file.delete();
 				}

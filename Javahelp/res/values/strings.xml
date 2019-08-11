@@ -4,6 +4,9 @@
     <string name="app_name">JavaHelp</string>
     <string name="hello_world">Hello world!</string>
     <string name="update">更新</string>
+    <string name="test">Service</string>
     <string name="title_activity_text">TextActivity</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="action_settings">Settings</string>
 
 </resources>

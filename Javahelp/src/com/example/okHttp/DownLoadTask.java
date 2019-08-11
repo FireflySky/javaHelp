@@ -41,7 +41,7 @@ public class DownLoadTask extends AsyncTask<String, Integer, Integer> {
 		try {
 			long length = 0;// 记录已下载的文件长度
 			String downLoadUrl = params[0];
-			file = new File("下载的图片的地址");
+			file = new File("/storage/emulated/0/aJavaHelp/day1.png");
 			if (file.exists()) {
 				length = file.length();
 			}
@@ -80,7 +80,7 @@ public class DownLoadTask extends AsyncTask<String, Integer, Integer> {
 						int progress = (int) ((total + length) * 100 / countLenght);
 					}
 				}
-				response.close();
+//				response.close();
 				return TYPE_SUCCESS;
 			}
 

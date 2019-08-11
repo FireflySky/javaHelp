@@ -128,6 +128,9 @@ public class MainActivity extends Activity {
 		case R.id.action_update:
 			upDate();
 			break;
+		case R.id.action_test:
+			Intent i=new Intent(MainActivity.this,TestActivity.class);
+			startActivity(i);
 		}
 		return super.onOptionsItemSelected(item);
 	}
