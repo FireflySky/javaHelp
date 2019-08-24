@@ -17,8 +17,8 @@ public class WebServlet extends HttpServlet {
 		 resp.setCharacterEncoding("UTF-8");
 		 PrintWriter out =resp.getWriter();
 		 StringBuilder strb=new StringBuilder();
-		 strb.append("mybatis1,mybatis2*")
-		 .append("Mybatis基础,常用标签及sql动态语句");//
+		 strb.append("mybatis1,mybatis2,spring1,spring2,springMvc1,springMvc-HelloWorld*")
+		 .append("Mybatis基础,常用标签及sql动态语句,初识Spring和IOC用法,SpringAop和代理,SpringMVC基础,SpringMvc框架输出Hello World实例");//
 		 
 		 try {
 			 out.write(strb.toString());//返回数据
