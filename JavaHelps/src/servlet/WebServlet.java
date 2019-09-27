@@ -17,9 +17,9 @@ public class WebServlet extends HttpServlet {
 		 resp.setCharacterEncoding("UTF-8");
 		 PrintWriter out =resp.getWriter();
 		 StringBuilder strb=new StringBuilder();
-		 strb.append("mybatis1,mybatis2,spring1,spring2,springMvc1,springMvc-HelloWorld,router,axios,sqlyouhua,ms1,ms2,ms3*")
+		 strb.append("mybatis1,mybatis2,spring1,spring2,springMvc1,springMvc-HelloWorld,redis1,redis2,redis3,router,axios,sqlyouhua,ms1,ms2,ms3*")
 		 .append("Mybatis基础,常用标签及sql动态语句,初识Spring和IOC用法,SpringAop和代理,SpringMVC基础,SpringMvc框架输出Hello World实例,")
-		 .append("vue路由,vue集成axios,数据库优化,框架常见面试题1,框架常见面试题2,框架常见面试题3");//
+		 .append("安装redis,doc下redis的命令,redis实例,vue路由,vue集成axios,数据库优化,框架常见面试题1,框架常见面试题2,框架常见面试题3");//
 		 
 		 
 		 try {
